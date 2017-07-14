@@ -11,8 +11,8 @@ to your mix.exs file
 Currently supported features:
 
   * Moving Average
-    ** Exponential
-    ** Simple
+    * Exponential
+    * Simple
 
 
 In progress features
