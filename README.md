@@ -1,19 +1,24 @@
 # Taex
 
-**TODO: Add description**
+Taex is a library to provide easy access to many of the technical analysis calculations done while trading on open markets (stock, forex, etc). In order to use this library you can add
 
-## Installation
+`{:taex, git: "https://github.com/jhartwell/Taex.git"}`
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `taex` to your list of dependencies in `mix.exs`:
+to your mix.exs file
 
-```elixir
-def deps do
-  [{:taex, "~> 0.1.0"}]
-end
-```
+# Features
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/taex](https://hexdocs.pm/taex).
+Currently supported features:
+
+  * Moving Average
+    ** Exponential
+    ** Simple
+
+
+In progress features
+
+  * MACD
+  * Bollinger Bands
+
+
 
