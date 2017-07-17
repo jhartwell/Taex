@@ -4,8 +4,14 @@ defmodule Taex.Indicators do
   #
   # Aroon Indicator
   # Formula: http://www.investopedia.com/ask/answers/112814/what-aroon-indicator-formula-and-how-indicator-calculated.asp
-  # {((number of periods) - (number of periods since highest high)) / (number of periods)} x 100
   #
+  #
+
+  @doc """
+  Formula: http://www.investopedia.com/ask/answers/112814/what-aroon-indicator-formula-and-how-indicator-calculated.asp
+  Up part of the Aroon Indicator calculation
+  Calculation: {((number of periods) - (number of periods since highest high)) / (number of periods)} x 100
+  """
   def aroon_up(prices) do
     number_of_periods = prices |> Enum.count
     corrected_prices = prices |> Enum.reverse
@@ -27,6 +33,12 @@ defmodule Taex.Indicators do
     end
   end
 
+
+  @doc """
+  Formula: http://www.investopedia.com/ask/answers/112814/what-aroon-indicator-formula-and-how-indicator-calculated.asp
+  Down part of the Aroon Indicator calculation
+  Calculation: {((number of periods) - (number of periods since lowest low)) / (number of periods)} x 100
+  """
   def aroon_down(prices) do
     number_of_periods = prices |> Enum.count
     corrected_prices = prices |> Enum.reverse
