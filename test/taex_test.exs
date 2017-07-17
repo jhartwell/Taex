@@ -1,6 +1,5 @@
 defmodule TaexTest do
   use ExUnit.Case
-  require Logger
   doctest Taex
 
   test "simple moving average" do

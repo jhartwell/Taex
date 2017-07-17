@@ -52,4 +52,11 @@ defmodule Taex.Indicators do
     slow = exponential(26, prices)
     slow - fast
   end
+
+  def stocastic(prices) do
+    c = Enum.at(prices, (prices |> Enum.count) - 1)
+    l14 = Taex.Helpers.low(14, prices)
+    h14 = Taex.Helpers.high(14, prices)
+    100 * (c - l14)/(h14 - l14)
+  end
 end
