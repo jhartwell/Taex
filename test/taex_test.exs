@@ -17,4 +17,38 @@ defmodule TaexTest do
     ema = exponential 5, [1..5]
     assert ema == 1
   end
+
+  test "Aroon indicator" do
+    import Taex.Indicators
+
+    #
+    # Case when the high is the latest price
+    #
+    prices = [1,2,3,4,5]
+    value = aroon_up prices
+    expected_value = (5 - 1) / (100 * 5)
+    assert value == expected_value
+
+    #
+    # Case when the low is the latest price
+    #
+    value = aroon_down prices
+    expected_value = (5 - 1) / (100 * 5)
+    assert value == expected_value
+
+    #
+    # Case when the high is the earliest price
+    #
+    prices = [5,4,3,2,1]
+    value = aroon_up prices
+    expected_value = (5 - 5) / (100  * 5)
+    assert value == expected_value
+
+    #
+    # Case when the low is the earliest price
+    #
+    value = aroon_down prices
+    expected_value = (5 - 5) / (100 * 5)
+    assert value == expected_value
+  end
 end
