@@ -14,6 +14,7 @@ defmodule Taex.MovingAverage do
     [hd] = exponential_list(n, [prices]) |> Enum.reverse |> Enum.take 1
     hd
   end
+  
   def exponential_list(n, prices) when is_list prices do
     count = prices |> Enum.count
     k = 2 / (n + 1)
