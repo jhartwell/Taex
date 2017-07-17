@@ -21,8 +21,9 @@ Currently supported features:
   * Oscillators
     * MACD (Moving Average Convergence Divergence)
     * Aroon
+    * Stochastic
 
-    
+
 In progress features
   * Bollinger Bands
 
