@@ -3,6 +3,8 @@ defmodule Taex.Indicators do
 
   #
   # Aroon Indicator
+  # Formula: http://www.investopedia.com/ask/answers/112814/what-aroon-indicator-formula-and-how-indicator-calculated.asp
+  # {((number of periods) - (number of periods since highest high)) / (number of periods)} x 100
   #
   def aroon_up(prices) do
     number_of_periods = prices |> Enum.count
@@ -12,7 +14,7 @@ defmodule Taex.Indicators do
   end
 
   def aroon_calc(number_of_periods, specified_period) do
-    (number_of_periods - specified_period) / (number_of_periods * 100)
+    ((number_of_periods - specified_period) / number_of_periods) * 100
   end
 
   defp calc_high(prices, high, count) do
@@ -45,18 +47,13 @@ defmodule Taex.Indicators do
 
   #
   # MACD Indicator
+  # Formula from: http://www.investopedia.com/terms/m/macd.asp
+  # 26 Day EMA - 12 Day EMA = MACD
   #
   def macd(prices) do
     import Taex.MovingAverage
     fast = exponential(12, prices)
     slow = exponential(26, prices)
     slow - fast
-  end
-
-  def stocastic(prices) do
-    c = Enum.at(prices, (prices |> Enum.count) - 1)
-    l14 = Taex.Helpers.low(14, prices)
-    h14 = Taex.Helpers.high(14, prices)
-    100 * (c - l14)/(h14 - l14)
   end
 end

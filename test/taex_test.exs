@@ -25,14 +25,14 @@ defmodule TaexTest do
     #
     prices = [1,2,3,4,5]
     value = aroon_up prices
-    expected_value = (5 - 1) / (100 * 5)
+    expected_value = ((5 - 1) / 5) * 100
     assert value == expected_value
 
     #
     # Case when the low is the latest price
     #
     value = aroon_down prices
-    expected_value = (5 - 1) / (100 * 5)
+    expected_value = ((5 - 1) / 5) * 100
     assert value == expected_value
 
     #
@@ -40,14 +40,14 @@ defmodule TaexTest do
     #
     prices = [5,4,3,2,1]
     value = aroon_up prices
-    expected_value = (5 - 5) / (100  * 5)
+    expected_value = ((5 - 5) / 5) * 100
     assert value == expected_value
 
     #
     # Case when the low is the earliest price
     #
     value = aroon_down prices
-    expected_value = (5 - 5) / (100 * 5)
+    expected_value = ((5 - 5) / 5 ) * 100
     assert value == expected_value
   end
 
@@ -59,13 +59,13 @@ defmodule TaexTest do
     #
     prices = [1,2,3,4,5]
     value = aroon_up prices
-    up_expected_value = (5 - 1) / (100 * 5)
+    up_expected_value = ((5 - 1) / 5) * 100
 
     #
     # Case when the low is the latest price
     #
     value = aroon_down prices
-    down_expected_value = (5 - 1) / (100 * 5)
+    down_expected_value = ((5 - 1) / 5) * 100
 
     oscillator = Oscillators.aroon prices
     assert oscillator.high == up_expected_value

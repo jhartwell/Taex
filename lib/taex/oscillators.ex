@@ -32,7 +32,7 @@ defmodule Taex.Oscillators do
   Calculates the stochastic current market rate for the given list of prices (%K)
   """
   @spec stochastic([float]) :: float
-  def stocastic(prices) when is_float(prices) do
+  def stochastic(prices) when is_float(prices) do
     c = Enum.at(prices, (prices |> Enum.count) - 1)
     l14 = Taex.Helpers.low(14, prices)
     h14 = Taex.Helpers.high(14, prices)
