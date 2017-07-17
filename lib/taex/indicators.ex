@@ -29,7 +29,7 @@ defmodule Taex.Indicators do
     aroon_calc(number_of_periods, low_period)
   end
 
-  def calc_low(prices, low, count) do
+  defp calc_low(prices, low, count) do
     case prices do
       [hd | tl] when low == nil -> calc_low(tl, hd, count)
       [hd | tl] when hd < low -> calc_low(tl, hd, count)
