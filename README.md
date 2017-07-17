@@ -14,10 +14,16 @@ Currently supported features:
     * Exponential
     * Simple
 
+  * Indicators
+    * MACD (Moving Average Convergence Divergence)
+    * Aroon
 
+  * Oscillators
+    * MACD (Moving Average Convergence Divergence)
+    * Aroon
+
+    
 In progress features
-
-  * MACD
   * Bollinger Bands
 
 
