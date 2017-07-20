@@ -6,7 +6,7 @@ defmodule Taex.Oscillators do
   @spec aroon([float]) :: Taex.AroonPoint.t
   def aroon(prices) do
     import Taex.Indicators
-    %Taex.AroonPoint {
+    %Taex.Points.Aroon {
       high: aroon_up(prices),
       low: aroon_down(prices)
     }
@@ -21,7 +21,7 @@ defmodule Taex.Oscillators do
     avg_macd = Taex.Indicators.macd prices
     ema_macd = Taex.MovingAverage.exponential(9, ma_macd)
 
-    %Taex.MacdPoint {
+    %Taex.Points.Macd {
       macd: avg_macd,
       ema_macd: ema_macd
     }
