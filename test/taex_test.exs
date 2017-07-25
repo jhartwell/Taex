@@ -4,6 +4,8 @@ defmodule TaexTest do
 
   alias Taex.MovingAverage
   alias Taex.Helpers
+  alias Taex.Points.Bollinger
+
   def sma(items, count \\ 0) do
     case count do
       0 -> Enum.sum(items) / Enum.count(items)
@@ -24,4 +26,9 @@ defmodule TaexTest do
     assert ma == avg
   end
 
+  test "bollinger band" do
+    prices = Enum.to_list 1..50
+    bb = Bollinger.new(prices)
+    assert bb.upper != bb.lower
+  end
 end

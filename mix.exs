@@ -28,6 +28,8 @@ defmodule Taex.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:statistics, "~> 0.4.0"}
+    ]
   end
 end
