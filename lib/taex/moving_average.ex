@@ -1,6 +1,9 @@
 defmodule Taex.MovingAverage do
   alias Taex.Helpers
 
+  @doc """
+  Calculates the simple moving average which is just the sum of the items passed in divided by the number of items 
+  """
   @spec simple(integer, [float]) :: float
   def simple(items) when is_list(items), do: Enum.sum(items) / Enum.count(items)
   def simple(0, _), do: 0
@@ -9,6 +12,7 @@ defmodule Taex.MovingAverage do
     (sum / n)
   end
 
+  @spec exponential(integer, [float]) :: float
   def exponential(n, []), do: 0
   def exponential(n, prices) do
     n_prices = Enum.take(prices, n)
@@ -16,7 +20,7 @@ defmodule Taex.MovingAverage do
    exp_calc(k, n_prices)
   end
 
-
+  @spec exp_calc(integer, {[float], float}) :: float
   defp exp_calc(_, {[], ema}), do: ema
   defp exp_calc(k, [hd | tl]), do: exp_calc(k, {tl, hd})
   defp exp_calc(k, {[p | tl], ema}) do

@@ -1,15 +1,6 @@
 defmodule Taex.Oscillators do
   alias Taex.MovingAverage
   alias Statistics
-  @doc """
-   Calculates the oscillator for the moving average convergence diververgence (MACD). This is
-   the MACD indicator and the exponential moving average (EMA) of the last 9 periods of MACD
-  """
-  @spec macd([Taex.Points.Macd.t]) :: float
-  def macd(macd) do
-    macd_values = Enum.reduce(macd, fn acc, x -> acc ++ x.value end)
-    MovingAverage.exponential(9, macd_values)
-  end
 
   
   @doc """
@@ -31,14 +22,5 @@ defmodule Taex.Oscillators do
     MovingAverage.simple(3, stochastics)
   end
 
-  def bollinger_middle_band(prices) do
-    MovingAverage.simple(20, prices)
-  end
-
-  def bollinger_band(prices, f) when is_function(f) and is_list(prices) do
-    count = Enum.count(prices)
-    last_twenty = Enum.drop(prices, count - 20)
-    stdev = Statistics.stdev(last_twenty)
-    f.(MovingAverage.simple(20, prices), (stdev * 2))
-  end
+  
 end
