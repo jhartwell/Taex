@@ -5,6 +5,13 @@ defmodule Taex.Mixfile do
     [app: :taex,
      version: "0.1.0",
      elixir: "~> 1.4",
+     description: "Technical analysis library which can be used on stocks/forex/etc.",
+     package: 
+     [
+       licenses: ["MIT"],
+       maintainers: ["Jon Hartwell"],
+       links: %{"GitHub" => "https://github.com/jhartwell/Taex"}
+     ],
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
@@ -29,7 +36,8 @@ defmodule Taex.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:statistics, "~> 0.4.0"}
+      {:statistics, "~> 0.4.0"},
+      {:ex_doc, "~> 0.14", only: :dev, runtime: false}
     ]
   end
 end
