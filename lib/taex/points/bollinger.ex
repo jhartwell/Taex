@@ -23,7 +23,7 @@ defmodule Taex.Points.Bollinger do
   The middle band is the 20 simple moving average of the prices
   """
   @spec bollinger_middle_band([float]) :: float
-  def bollinger_middle_band(prices) do
+  defp bollinger_middle_band(prices) do
     MovingAverage.simple(20, prices)
   end
 
@@ -33,7 +33,7 @@ defmodule Taex.Points.Bollinger do
   If fn x y -> x - y end is passed in then it will calculate the lower band
   """
   @spec bollinger_band([float], function) :: float
-  def bollinger_band(prices, f) when is_function(f) and is_list(prices) do
+  defp bollinger_band(prices, f) when is_function(f) and is_list(prices) do
     count = Enum.count(prices)
     last_twenty = Enum.drop(prices, count - 20)
     stdev = Statistics.stdev(last_twenty)
