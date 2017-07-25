@@ -1,5 +1,5 @@
 defmodule Taex.Oscillators do
-
+  alias Taex.MovingAverage
   @doc """
     Calculates the Aroon Oscillator. This captures the high and the low Aroon indicators
   """
@@ -16,15 +16,10 @@ defmodule Taex.Oscillators do
    Calculates the oscillator for the moving average convergence diververgence (MACD). This is
    the MACD indicator and the exponential moving average (EMA) of the last 9 periods of MACD
   """
-  @spec macd([float], [float]) :: Taex.MacdPoint.t
-  def macd(prices, ma_macd) do
-    avg_macd = Taex.Indicators.macd prices
-    ema_macd = Taex.MovingAverage.exponential(9, ma_macd)
-
-    %Taex.Points.Macd {
-      macd: avg_macd,
-      ema_macd: ema_macd
-    }
+  @spec macd([Taex.Points.Macd.t]) :: float
+  def macd(macd) do
+    macd_values = Enum.reduce(macd, fn acc, x -> acc ++ x.value end)
+    MovingAverage.exponential(9, macd_values)
   end
 
   
@@ -32,7 +27,7 @@ defmodule Taex.Oscillators do
   Calculates the stochastic current market rate for the given list of prices (%K)
   """
   @spec stochastic([float]) :: float
-  def stochastic(prices) when is_float(prices) do
+  def stochastic(prices) when is_list(prices) do
     c = Enum.at(prices, (prices |> Enum.count) - 1)
     l14 = Taex.Helpers.low(14, prices)
     h14 = Taex.Helpers.high(14, prices)
@@ -44,7 +39,7 @@ defmodule Taex.Oscillators do
   """
   @spec stocastic_ma([float]) :: float
   def stocastic_ma(stochastics) when is_list(stochastics) do
-    Taex.MovingAverage.simple(3, stochastics)
+    MovingAverage.simple(3, stochastics)
   end
 
 end

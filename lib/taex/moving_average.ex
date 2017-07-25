@@ -5,42 +5,20 @@ defmodule Taex.MovingAverage do
     sum / n
   end
 
-  def exponential(n, prices) when is_list(prices) do
-    [hd] = exponential_list(n, prices) |> Enum.reverse |> Enum.take 1
-    hd
-  end
-
-  def exponential(n, prices) do
-    [hd] = exponential_list(n, [prices]) |> Enum.reverse |> Enum.take 1
-    hd
-  end
-  
-  def exponential_list(n, prices) when is_list prices do
-    count = prices |> Enum.count
+  def exponential(n, []), do: 0
+  def exponential(n, prices), do: exponential(n, prices, :standard)
+  def exponential(n, prices, :reverse), do: exponential(n, Enum.reverse(prices), :standard)
+  def exponential(n, prices, :standard) do
+    n_prices = Enum.take(prices, n)
     k = 2 / (n + 1)
-    case n do
-      i when i < count -> prices |> Enum.drop(count - n) |> exp(k, [])
-      _ -> {:error, "EMA period is more than prices that were provided"}
-    end
+    exp_calc(k, n_prices)
   end
 
-  defp exp(prices, k,  ema) do
-    case ema do
-      [hd | tl] -> case prices do
-                    [p | t] -> t |> exp(k, ema ++ [(p * k) + (hd * (1 - k))])
-                    [p] -> ema ++ [(p * k) + (hd * (1 - k))]
-                    [] -> ema
-                  end
-      [hd] ->  case prices do
-                    [p | t] -> t |> exp(k, (ema ++ [(p * k) + (hd * (1 - k))]))
-                    [p] -> ema ++ [(p * k) + (hd * (1 - k))]
-                    [] -> ema
-               end
-      [] -> case prices do
-              [p | t] -> t |> exp(k, [p])
-              [p] -> [p]
-               [] -> []
-            end
-      end
+  defp exp_calc(k, prices), do: exp_calc(k, {prices, []})
+  defp exp_calc(_, {[], ema}), do: ema
+  defp exp_calc(k, {[hd | tl], []}), do: exp_calc(k, {tl, hd})
+  defp exp_calc(k, {[p | tl], ema}) when is_list(ema) do
+    [ema_head | _ ] = ema
+    exp_calc(k, {tl, ema ++ [(p * k) + (ema_head * (1 - k))]})
   end
 end

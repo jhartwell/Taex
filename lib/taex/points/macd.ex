@@ -1,4 +1,13 @@
 defmodule Taex.Points.Macd do
-  @type t :: %{macd: float, ema_macd: float}
-  defstruct [:macd, :ema_macd]
+  alias Taex.Indicators
+
+  @type t :: %{value: float}
+  defstruct [:value]
+
+  def new(prices), do: new(prices, :standard)
+  def new(prices, direction) do
+    %Taex.Points.Macd {
+      value: Taex.Indicators.macd(prices, direction)
+    }
+  end
 end
