@@ -14,11 +14,10 @@ defmodule Taex.MovingAverage do
     exp_calc(k, n_prices)
   end
 
-  defp exp_calc(k, prices), do: exp_calc(k, {prices, []})
+
   defp exp_calc(_, {[], ema}), do: ema
-  defp exp_calc(k, {[hd | tl], []}), do: exp_calc(k, {tl, hd})
-  defp exp_calc(k, {[p | tl], ema}) when is_list(ema) do
-    [ema_head | _ ] = ema
-    exp_calc(k, {tl, ema ++ [(p * k) + (ema_head * (1 - k))]})
+  defp exp_calc(k, [hd | tl]), do: exp_calc(k, {tl, hd})
+  defp exp_calc(k, {[p | tl], ema}) do
+    exp_calc(k, {tl, (p * k) + (ema * (1 - k))})
   end
 end
