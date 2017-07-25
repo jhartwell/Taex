@@ -4,10 +4,9 @@ defmodule Taex.Points.Macd do
   @type t :: %{value: float}
   defstruct [:value]
 
-  def new(prices), do: new(prices, :standard)
-  def new(prices, direction) do
+  def new(prices) do
     %Taex.Points.Macd {
-      value: Taex.Indicators.macd(prices, direction)
+      value: Taex.Indicators.macd(prices)
     }
   end
 end

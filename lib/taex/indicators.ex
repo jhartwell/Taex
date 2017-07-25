@@ -12,9 +12,7 @@ defmodule Taex.Indicators do
   Up part of the Aroon Indicator calculation
   Calculation: {((number of periods) - (number of periods since highest high)) / (number of periods)} x 100
   """
-  def aroon_up(prices), do: aroon_up(prices, :standard)
-  def aroon_up(prices, :reverse), do: aroon_up(Enum.reverse(prices), :standard)
-  def aroon_up(prices, :standard) do
+  def aroon_up(prices) when is_list(prices) do
     number_of_periods = prices |> Enum.count
     high_period = calc_high(prices)
     aroon_calc(number_of_periods, high_period)
@@ -38,9 +36,7 @@ defmodule Taex.Indicators do
   Down part of the Aroon Indicator calculation
   Calculation: {((number of periods) - (number of periods since lowest low)) / (number of periods)} x 100
   """
-  def aroon_down(prices), do: aroon_down(prices, :standard)
-  def aroon_down(prices, :reverse), do: aroon_down(Enum.reverse(prices), :standard)
-  def aroon_down(prices, :standard) do
+  def aroon_down(prices) when is_list(prices) do
     number_of_periods = prices |> Enum.count
     low_period = calc_low(prices)
     aroon_calc(number_of_periods, low_period)
@@ -54,25 +50,13 @@ defmodule Taex.Indicators do
       false -> calc_low(tl, low, {current_index + 1, low_index})
     end
   end
-  defp calc_low(prices, low, count) do
-    case prices do
-      [hd | tl] when low == nil -> calc_low(tl, hd, count)
-      [hd | tl] when hd < low -> calc_low(tl, hd, count)
-      [hd | tl] -> calc_low(tl, low, count + 1)
-      [hd] when low == nil -> count
-      [hd] when hd < low -> count
-      _ -> count
-    end
-  end
 
   #
   # MACD Indicator
   # Formula from: http://www.investopedia.com/terms/m/macd.asp
   # 26 Day EMA - 12 Day EMA = MACD
   #
-  def macd(prices), do: macd(prices, :standard)
-  def macd(prices, :reverse), do: macd(Enum.reverse(prices), :standard)
-  def macd(prices, :standard) do
+  def macd(prices) do
     fast = MovingAverage.exponential(12, prices)
     slow = MovingAverage.exponential(26, prices)
     slow - fast
