@@ -11,6 +11,10 @@ Taex is a library to provide easy access to many of the technical analysis calcu
 
 to your mix.exs file
 
+# Dependencies
+
+Taex is dependents on the elixir statistics library https://github.com/msharp/elixir-statistics
+
 # Features
 
 Currently supported features:
@@ -27,10 +31,6 @@ Currently supported features:
     * MACD (Moving Average Convergence Divergence)
     * Aroon
     * Stochastic
-
-
-In progress features
-  * Bollinger Bands
-
+    * Bollinger Bands
 
 
