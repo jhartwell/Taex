@@ -2,73 +2,26 @@ defmodule TaexTest do
   use ExUnit.Case
   doctest Taex
 
+  alias Taex.MovingAverage
+  alias Taex.Helpers
+  def sma(items, count \\ 0) do
+    case count do
+      0 -> Enum.sum(items) / Enum.count(items)
+      i -> (items |> Enum.take(i) |> Enum.sum) / i
+    end
+  end
+
   test "simple moving average" do
-    import Taex.MovingAverage
-    avg = simple 5, 1..10
-    assert avg == 8
+    prices = Enum.to_list 1..10 |> Enum.map( fn x -> x / 1 end)
 
-    avg = simple 20, 1..100
-    assert avg == 90.5
+    ma = sma(prices,5)
+    avg = MovingAverage.simple 5, prices
+    assert ma == avg
+
+    prices = Enum.to_list 1..100 |> Enum.map( fn x -> x / 1 end)
+    ma = sma(prices,20)
+    avg = MovingAverage.simple 20, prices
+    assert ma == avg
   end
 
-  test "exponential moving average" do
-    import Taex.MovingAverage
-    ema = exponential 5, [1..5]
-    assert ema == 1
-  end
-
-  test "Aroon indicator" do
-    import Taex.Indicators
-
-    #
-    # Case when the high is the latest price
-    #
-    prices = [1,2,3,4,5]
-    value = aroon_up prices
-    expected_value = ((5 - 1) / 5) * 100
-    assert value == expected_value
-
-    #
-    # Case when the low is the latest price
-    #
-    value = aroon_down prices
-    expected_value = ((5 - 1) / 5) * 100
-    assert value == expected_value
-
-    #
-    # Case when the high is the earliest price
-    #
-    prices = [5,4,3,2,1]
-    value = aroon_up prices
-    expected_value = ((5 - 5) / 5) * 100
-    assert value == expected_value
-
-    #
-    # Case when the low is the earliest price
-    #
-    value = aroon_down prices
-    expected_value = ((5 - 5) / 5 ) * 100
-    assert value == expected_value
-  end
-
-  test "Aroon Oscillator" do
-    import Taex.Indicators
-    alias Taex.Oscillators
-    #
-    # Case when the high is the latest price
-    #
-    prices = [1,2,3,4,5]
-    value = aroon_up prices
-    up_expected_value = ((5 - 1) / 5) * 100
-
-    #
-    # Case when the low is the latest price
-    #
-    value = aroon_down prices
-    down_expected_value = ((5 - 1) / 5) * 100
-
-    oscillator = Oscillators.aroon prices
-    assert oscillator.high == up_expected_value
-    assert oscillator.low == down_expected_value
-  end
 end

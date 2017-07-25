@@ -1,16 +1,5 @@
 defmodule Taex.Oscillators do
   alias Taex.MovingAverage
-  @doc """
-    Calculates the Aroon Oscillator. This captures the high and the low Aroon indicators
-  """
-  @spec aroon([float]) :: Taex.AroonPoint.t
-  def aroon(prices) do
-    import Taex.Indicators
-    %Taex.Points.Aroon {
-      high: aroon_up(prices),
-      low: aroon_down(prices)
-    }
-  end
 
   @doc """
    Calculates the oscillator for the moving average convergence diververgence (MACD). This is

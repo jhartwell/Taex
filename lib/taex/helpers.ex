@@ -49,4 +49,9 @@ defmodule Taex.Helpers do
       _ -> high
     end
   end
+
+  def precision(number, precision \\ 0) do
+    [val] = :io_lib.format("~.#{precision}f", [number])
+    val |> to_string |> String.to_float
+  end
 end
