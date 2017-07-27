@@ -1,6 +1,5 @@
 defmodule Taex.Oscillators do
   alias Taex.MovingAverage
-  alias Statistics
 
   
   @doc """

@@ -5,15 +5,19 @@
 
 # Taex
 
-Taex is a library to provide easy access to many of the technical analysis calculations done while trading on open markets (stock, forex, etc). In order to use this library you can add
+Taex is a library to provide easy access to many of the technical analysis calculations done while trading on open markets (stock, forex, etc). 
+
+In order to use this library you can add
 
 For the latest version (which could be broken), you can pull from GitHub:
+
 `{:taex, git: "https://github.com/jhartwell/Taex.git"}`
 
-If you want the stable version, then pull from hex by adding 
+If you want the stable version, then pull from hex by adding:
+
 `{:taex, "~> 0.1.0"}`
 
-to your mix.exs file
+to your deps in the mix.exs file
 
 # Dependencies
 
@@ -26,14 +30,13 @@ Currently supported features:
   * Moving Average
     * Exponential
     * Simple
+    * Weighted
 
   * Indicators
     * MACD (Moving Average Convergence Divergence)
     * Aroon
 
   * Oscillators
-    * MACD (Moving Average Convergence Divergence)
-    * Aroon
     * Stochastic
     * Bollinger Bands
 
