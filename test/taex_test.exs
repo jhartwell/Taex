@@ -3,7 +3,6 @@ defmodule TaexTest do
   doctest Taex
 
   alias Taex.MovingAverage
-  alias Taex.Helpers
   alias Taex.Points.Bollinger
 
   def sma(items, count \\ 0) do
@@ -26,9 +25,20 @@ defmodule TaexTest do
     assert ma == avg
   end
 
+  test "weighted moving average" do
+    prices  = [{1,1}, {2,1}, {3,1}]
+    wma = MovingAverage.weighted prices
+    assert 6 == wma
+
+    prices = [{35, 0.25}, {25, 0.34}, {50, 0.10}]
+    expected = (35 * 0.25) + (25 * 0.34) + (50 * 0.10)
+    wma = MovingAverage.weighted prices
+    assert expected == wma
+  end 
+
   test "bollinger band" do
     prices = Enum.to_list 1..50
-    bb = Bollinger.new(prices)
+    bb = Bollinger.calculate(prices)
     assert bb.upper != bb.lower
   end
 end

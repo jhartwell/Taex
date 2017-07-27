@@ -1,4 +1,6 @@
 defmodule Taex.Points.Macd do
+  alias Taex.MovingAverage
+  
   @moduledoc """
   MACD Indicator, which is the 26 day exponential moving average subtracted by the 12 day exponential moving average. Formula was taken from:
   Formula from: http://www.investopedia.com/terms/m/macd.asp
@@ -18,7 +20,7 @@ defmodule Taex.Points.Macd do
   @spec get_oscillator([Taex.Points.Macd.t]) :: float
   def get_oscillator(macd) do
     macd_values = Enum.reduce(macd, fn acc, x -> acc ++ [x.value] end)
-    MovingAverage.exponential(9, macd)
+    MovingAverage.exponential(9, macd_values)
   end
 
   defp macd(prices) do

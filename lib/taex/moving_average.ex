@@ -26,4 +26,10 @@ defmodule Taex.MovingAverage do
   defp exp_calc(k, {[p | tl], ema}) do
     exp_calc(k, {tl, (p * k) + (ema * (1 - k))})
   end
+
+  @spec weighted([{float, float}]) :: float
+  def weighted(items) do
+    Enum.reduce(items, 0, fn {a, b} , acc -> acc + (a * b) end)
+  end
+
 end
