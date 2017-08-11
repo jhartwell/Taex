@@ -17,9 +17,8 @@ defmodule Taex.Points.Macd do
   @doc """
   This will retrieve the oscillator for the MACD. This is calculated by taking the exponential moving average of the last 9 MACD entries
   """
-  @spec get_oscillator([Taex.Points.Macd.t]) :: float
-  def get_oscillator(macd) do
-    macd_values = Enum.reduce(macd, fn acc, x -> acc ++ [x.value] end)
+  @spec get_oscillator([float]) :: float
+  def get_oscillator(macd_values) do
     MovingAverage.exponential(9, macd_values)
   end
 

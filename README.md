@@ -15,7 +15,7 @@ For the latest version (which could be broken), you can pull from GitHub:
 
 If you want the stable version, then pull from hex by adding:
 
-`{:taex, "~> 0.1.0"}`
+`{:taex, "~> 0.1.2"}`
 
 to your deps in the mix.exs file
 
