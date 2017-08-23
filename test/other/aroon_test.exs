@@ -1,4 +1,9 @@
 defmodule TaexTest.Aroon do
+  @moduledoc """
+  The TTR package in R (https://cran.r-project.org/web/packages/TTR/index.html) is used to perform all calculations
+  to get the expected value for the Aroon indicator. That result is then used to populate the expected value in each 
+  of the unit test cases
+  """
   use ExUnit.Case
 
   test "basic Aroon point low to high" do
