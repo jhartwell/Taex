@@ -1,4 +1,4 @@
-defmodule TaexTest.Points do
+defmodule TaexTest.Aroon do
   use ExUnit.Case
 
   test "basic Aroon point low to high" do
