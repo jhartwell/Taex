@@ -19,25 +19,29 @@ defmodule Taex.Points.Aroon do
   Up part of the Aroon Indicator calculation
   Calculation: {((number of periods) - (number of periods since highest high)) / (number of periods)} x 100
   """
-  def calculate(prices) when is_list(prices) do
+  def calculate(prices, n \\ 20) when is_list(prices) do
     %Taex.Points.Aroon {
-      high: aroon_up(prices),
-      low: aroon_down(prices)
+      high: aroon_up(prices, n),
+      low: aroon_down(prices, n)
     }
   end
 
-  defp aroon_up(prices) when is_list(prices) do
-    number_of_periods = prices |> Enum.count
-    high_period = calc_high(prices)
-    aroon_calc(number_of_periods, high_period)
+  defp aroon_up(prices, n) when is_list(prices) do
+    usable_prices = prices |> Enum.reverse |> Enum.take(n)
+    high_period = calc_high(usable_prices)
+    aroon_calc(n, high_period)
   end
 
   defp aroon_calc(number_of_periods, specified_period) do
-    ((number_of_periods - specified_period) / number_of_periods) * 100
+    case {number_of_periods, specified_period} do
+      {n, p} when (n - 1) == p -> 0
+      {n, p} when p == 0 -> 100
+      {n, p} -> ((number_of_periods - specified_period) / number_of_periods) * 100
+    end
   end
 
+  defp calc_high([hd | tl]), do: calc_high(tl, hd, {1, 0})
   defp calc_high([], _, {_, high_index}), do: high_index
-  defp calc_high([hd | tl]), do: calc_high(tl, hd, {2, 1})
   defp calc_high([hd | tl], high, {current_index, high_index}) do
     case hd > high do
       true -> calc_high(tl, hd, {current_index + 1, current_index})
@@ -50,14 +54,14 @@ defmodule Taex.Points.Aroon do
   Down part of the Aroon Indicator calculation
   Calculation: {((number of periods) - (number of periods since lowest low)) / (number of periods)} x 100
   """
-  defp aroon_down(prices) when is_list(prices) do
-    number_of_periods = prices |> Enum.count
-    low_period = calc_low(prices)
-    aroon_calc(number_of_periods, low_period)
+  defp aroon_down(prices, n) when is_list(prices) do
+    usable_prices = prices |> Enum.reverse |> Enum.take(n)
+    low_period = calc_low(usable_prices)
+    aroon_calc(n, low_period)
   end
 
+  defp calc_low([hd | tl]), do: calc_low(tl, hd, {1, 0})
   defp calc_low([], _, {_, low_index}), do: low_index
-  defp calc_low([hd | tl]), do: calc_low(tl, hd, {2, 1})
   defp calc_low([hd | tl], low, {current_index, low_index}) do
     case hd < low do
       true -> calc_low(tl, hd, {current_index + 1, current_index})
