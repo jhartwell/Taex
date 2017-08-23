@@ -12,10 +12,11 @@ defmodule Taex.Points.Bollinger do
 
 
   def calculate(prices) do
+    last_twenty = prices |> Enum.reverse |> Enum.take(20)
     %Taex.Points.Bollinger {
-      upper: bollinger_band(prices, fn x, y -> x + y end),
-      middle: bollinger_middle_band(prices),
-      lower: bollinger_band(prices, fn x, y -> x - y end)
+      upper: bollinger_band(last_twenty, fn x, y -> x + y end),
+      middle: bollinger_middle_band(last_twenty),
+      lower: bollinger_band(last_twenty, fn x, y -> x - y end)
     }
   end
 
@@ -34,9 +35,7 @@ defmodule Taex.Points.Bollinger do
   """
   @spec bollinger_band([float], function) :: float
   defp bollinger_band(prices, f) when is_function(f) and is_list(prices) do
-    count = Enum.count(prices)
-    last_twenty = Enum.drop(prices, count - 20)
-    stdev = Statistics.stdev(last_twenty)
+    stdev = Statistics.stdev(prices)
     f.(MovingAverage.simple(20, prices), (stdev * 2))
   end
 end
