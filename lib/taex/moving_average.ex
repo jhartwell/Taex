@@ -1,4 +1,11 @@
 defmodule Taex.MovingAverage do
+  defmodule DoubleEma do
+    defstruct [:ema, :ema_2, :value]
+  end
+
+  defmodule TripleEma do
+    defstruct [:ema, :ema_2, :ema_3, :value]
+  end
 
   @doc """
   Calculates the simple moving average which is just the sum of the items passed in divided by the number of items 
@@ -14,31 +21,42 @@ defmodule Taex.MovingAverage do
   @spec exponential(integer, [float]) :: float
   def exponential(_, []), do: 0
   def exponential(n, prices) do
-    k = weighting_multiplier(n)
-    [head | _] = exp_calc(k, prices)
+    [head | _] = exp_calc(n, prices)
     head
+  end
+  def exponential(n, price, previous_ema) do
+    exp_calc(n, [price], [previous_ema]) |> Enum.at(0)
   end
 
   @spec double_ema(integer, [float]) :: float
   def double_ema(_, []), do: 0
   def double_ema(n, prices) do
-    k = weighting_multiplier(n)
-    emas = exp_calc(k, prices)
-    ema_2 = exp_calc(k, emas |> Enum.reverse) |> Enum.at(0)
+    emas = exp_calc(n, prices)
+    ema_2 = exp_calc(n, emas |> Enum.reverse) |> Enum.at(0)
     ema = emas |> Enum.at(0)
     2 * ema - ema_2
+  end
+  def double_ema(n, price, %DoubleEma{ema: previous_ema, ema_2: previous_ema_2}) do
+    ema = exp_calc(n, [price], [previous_ema]) |> Enum.at(0)
+    ema_2 = exp_calc(n, [ema], [previous_ema_2]) |> Enum.at(0)
+    %DoubleEma{ema: ema, ema_2: ema_2, value: 2 * ema - ema_2}
   end
 
   @spec triple_ema(integer, [float]) :: float
   def triple_ema(_, []), do: 0
   def triple_ema(n, prices) do
-    k = weighting_multiplier(n)
-    emas = exp_calc(k, prices)
-    ema_2s = exp_calc(k, emas |> Enum.reverse)
-    ema_3 = exp_calc(k, ema_2s |> Enum.reverse) |> Enum.at(0)
+    emas = exp_calc(n, prices)
+    ema_2s = exp_calc(n, emas |> Enum.reverse)
+    ema_3 = exp_calc(n, ema_2s |> Enum.reverse) |> Enum.at(0)
     ema = emas |> Enum.at(0)
     ema_2 = ema_2s |> Enum.at(0)
     (3 * ema - 3 * ema_2) + ema_3
+  end
+  def triple_ema(n, price, %TripleEma{ema: previous_ema, ema_2: previous_ema_2, ema_3: previous_ema_3}) do
+    ema = exp_calc(n, [price], [previous_ema]) |> Enum.at(0)
+    ema_2 = exp_calc(n, [ema], [previous_ema_2]) |> Enum.at(0)
+    ema_3 = exp_calc(n, [ema_2], [previous_ema_3]) |> Enum.at(0)
+    %TripleEma{ema: ema, ema_2: ema_2, ema_3: ema_3, value: (3 * ema - 3 * ema_2) + ema_3}
   end
 
   @spec weighting_multiplier(integer) :: float
@@ -48,8 +66,9 @@ defmodule Taex.MovingAverage do
 
   @spec exp_calc(integer, [float], [float]) :: [float]
   defp exp_calc(_, [], emas), do: emas 
-  defp exp_calc(k, [p | tl], [ema_head | ema_tail]) do
-    exp_calc(k, tl, [(p * k) + (ema_head * (1 - k))] ++ [ema_head] ++ ema_tail)
+  defp exp_calc(n, [p | tl], [ema_head | ema_tail]) do
+    k = weighting_multiplier(n)
+    exp_calc(n, tl, [(p * k) + (ema_head * (1 - k))] ++ [ema_head] ++ ema_tail)
   end
   defp exp_calc(k, [hd | tl]), do: exp_calc(k, tl, [hd])
 

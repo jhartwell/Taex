@@ -41,6 +41,9 @@ defmodule TaexTest do
     
     ema = MovingAverage.exponential(3, prices)
     assert 5.03125 == ema
+
+    ema = MovingAverage.exponential(3, 6, 4.0625)
+    assert 5.03125 == ema
   end
 
   test "double exponential moving average" do
@@ -48,6 +51,9 @@ defmodule TaexTest do
     
     ema = MovingAverage.double_ema(3, prices)
     assert 5.921875 == ema
+
+    ema = MovingAverage.double_ema(3, 6, %MovingAverage.DoubleEma{ema: 4.0625, ema_2: 3.25, value: 0})
+    assert %Taex.MovingAverage.DoubleEma{ema: 5.03125, ema_2: 4.140625, value: 5.921875} == ema
   end
 
   test "triple exponential moving average" do
@@ -55,6 +61,9 @@ defmodule TaexTest do
     
     ema = MovingAverage.triple_ema(3, prices)
     assert 6.0390625 == ema
+
+    ema = MovingAverage.triple_ema(3, 6, %MovingAverage.TripleEma{ema: 4.0625, ema_2: 3.25, ema_3: 2.59375, value: 0})
+    assert %Taex.MovingAverage.TripleEma{ema: 5.03125, ema_2: 4.140625, ema_3: 3.3671875, value: 6.0390625} == ema
   end
 
   test "bollinger band" do
