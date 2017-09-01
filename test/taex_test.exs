@@ -36,6 +36,27 @@ defmodule TaexTest do
     assert expected == wma
   end 
 
+  test "exponential moving average" do
+    prices = Enum.to_list 1..6 |> Enum.map( fn x -> x / 1 end)
+    
+    ema = MovingAverage.exponential(3, prices)
+    assert 5.03125 == ema
+  end
+
+  test "double exponential moving average" do
+    prices = Enum.to_list 1..6 |> Enum.map( fn x -> x / 1 end)
+    
+    ema = MovingAverage.double_ema(3, prices)
+    assert 5.921875 == ema
+  end
+
+  test "triple exponential moving average" do
+    prices = Enum.to_list 1..6 |> Enum.map( fn x -> x / 1 end)
+    
+    ema = MovingAverage.triple_ema(3, prices)
+    assert 6.0390625 == ema
+  end
+
   test "bollinger band" do
     prices = Enum.to_list 1..50
     bb = Bollinger.calculate(prices)
