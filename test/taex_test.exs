@@ -50,7 +50,7 @@ defmodule TaexTest do
     prices = Enum.to_list 1..6 |> Enum.map( fn x -> x / 1 end)
     
     ema = MovingAverage.double_ema(3, prices)
-    assert 5.921875 == ema
+    assert %Taex.MovingAverage.DoubleEma{ema: 5.03125, ema_2: 4.140625, value: 5.921875} == ema
 
     ema = MovingAverage.double_ema(3, 6, %MovingAverage.DoubleEma{ema: 4.0625, ema_2: 3.25, value: 0})
     assert %Taex.MovingAverage.DoubleEma{ema: 5.03125, ema_2: 4.140625, value: 5.921875} == ema
@@ -60,7 +60,7 @@ defmodule TaexTest do
     prices = Enum.to_list 1..6 |> Enum.map( fn x -> x / 1 end)
     
     ema = MovingAverage.triple_ema(3, prices)
-    assert 6.0390625 == ema
+    assert %Taex.MovingAverage.TripleEma{ema: 5.03125, ema_2: 4.140625, ema_3: 3.3671875, value: 6.0390625} == ema
 
     ema = MovingAverage.triple_ema(3, 6, %MovingAverage.TripleEma{ema: 4.0625, ema_2: 3.25, ema_3: 2.59375, value: 0})
     assert %Taex.MovingAverage.TripleEma{ema: 5.03125, ema_2: 4.140625, ema_3: 3.3671875, value: 6.0390625} == ema

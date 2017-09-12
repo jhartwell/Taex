@@ -34,7 +34,7 @@ defmodule Taex.MovingAverage do
     emas = exp_calc(n, prices)
     ema_2 = exp_calc(n, emas |> Enum.reverse) |> Enum.at(0)
     ema = emas |> Enum.at(0)
-    2 * ema - ema_2
+    %DoubleEma{ema: ema, ema_2: ema_2, value: 2 * ema - ema_2}
   end
   def double_ema(n, price, %DoubleEma{ema: previous_ema, ema_2: previous_ema_2}) do
     ema = exp_calc(n, [price], [previous_ema]) |> Enum.at(0)
@@ -50,7 +50,7 @@ defmodule Taex.MovingAverage do
     ema_3 = exp_calc(n, ema_2s |> Enum.reverse) |> Enum.at(0)
     ema = emas |> Enum.at(0)
     ema_2 = ema_2s |> Enum.at(0)
-    (3 * ema - 3 * ema_2) + ema_3
+    %TripleEma{ema: ema, ema_2: ema_2, ema_3: ema_3, value: (3 * ema - 3 * ema_2) + ema_3}
   end
   def triple_ema(n, price, %TripleEma{ema: previous_ema, ema_2: previous_ema_2, ema_3: previous_ema_3}) do
     ema = exp_calc(n, [price], [previous_ema]) |> Enum.at(0)
