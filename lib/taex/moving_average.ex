@@ -17,6 +17,8 @@ defmodule Taex.MovingAverage do
         [_head | prices] = vwma.prices
         [_head | volumes] = vwma.volumes
         %{vwma | prices: prices, volumes: volumes}
+      else
+        vwma
       end
 
       numerator = vwma.prices
