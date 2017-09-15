@@ -3,6 +3,7 @@ defmodule TaexTest do
   doctest Taex
 
   alias Taex.MovingAverage
+  alias Taex.MovingAverage.{VolumeWeightedMovingAverage}
   alias Taex.Points.Bollinger
 
   def sma(items, count \\ 0) do
@@ -50,20 +51,31 @@ defmodule TaexTest do
     prices = Enum.to_list 1..6 |> Enum.map( fn x -> x / 1 end)
     
     ema = MovingAverage.double_ema(3, prices)
-    assert %Taex.MovingAverage.DoubleEma{ema: 5.03125, ema_2: 4.140625, value: 5.921875} == ema
+    assert %MovingAverage.DoubleEma{ema: 5.03125, ema_2: 4.140625, value: 5.921875} == ema
 
     ema = MovingAverage.double_ema(3, 6, %MovingAverage.DoubleEma{ema: 4.0625, ema_2: 3.25, value: 0})
-    assert %Taex.MovingAverage.DoubleEma{ema: 5.03125, ema_2: 4.140625, value: 5.921875} == ema
+    assert %MovingAverage.DoubleEma{ema: 5.03125, ema_2: 4.140625, value: 5.921875} == ema
   end
 
   test "triple exponential moving average" do
     prices = Enum.to_list 1..6 |> Enum.map( fn x -> x / 1 end)
     
     ema = MovingAverage.triple_ema(3, prices)
-    assert %Taex.MovingAverage.TripleEma{ema: 5.03125, ema_2: 4.140625, ema_3: 3.3671875, value: 6.0390625} == ema
+    assert %MovingAverage.TripleEma{ema: 5.03125, ema_2: 4.140625, ema_3: 3.3671875, value: 6.0390625} == ema
 
     ema = MovingAverage.triple_ema(3, 6, %MovingAverage.TripleEma{ema: 4.0625, ema_2: 3.25, ema_3: 2.59375, value: 0})
-    assert %Taex.MovingAverage.TripleEma{ema: 5.03125, ema_2: 4.140625, ema_3: 3.3671875, value: 6.0390625} == ema
+    assert %MovingAverage.TripleEma{ema: 5.03125, ema_2: 4.140625, ema_3: 3.3671875, value: 6.0390625} == ema
+  end
+
+  test "volume weighted moving average" do
+    prices = [1,2,3,4,5,6]
+    volumes = [2,3,4,5,6,7]
+
+    vwma = %VolumeWeightedMovingAverage{prices: prices, volumes: volumes, periods: 6}    
+
+    vwma = VolumeWeightedMovingAverage.update(vwma, 7, 8)
+
+    assert (2 * 3 + 3 * 4 + 4 * 5 + 5 * 6 + 6 * 7 + 7 * 8)/Enum.sum(3..8) == vwma.value
   end
 
   test "bollinger band" do

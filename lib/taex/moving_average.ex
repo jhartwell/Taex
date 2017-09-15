@@ -7,6 +7,29 @@ defmodule Taex.MovingAverage do
     defstruct [:ema, :ema_2, :ema_3, :value]
   end
 
+  defmodule VolumeWeightedMovingAverage do
+    defstruct [:prices, :volumes, :periods, :value]
+
+    def update(%VolumeWeightedMovingAverage{} = vwma, market_price, volume) do
+      vwma = %{vwma | prices: vwma.prices ++ [market_price], volumes: vwma.volumes ++ [volume]}
+
+      vwma = if Enum.count(vwma.prices) > vwma.periods do
+        [_head | prices] = vwma.prices
+        [_head | volumes] = vwma.volumes
+        %{vwma | prices: prices, volumes: volumes}
+      end
+
+      numerator = vwma.prices
+      |> Enum.with_index
+      |> Enum.map(fn({price, index})->
+        price * Enum.at(vwma.volumes, index)
+      end)
+      |> Enum.sum
+
+      %{vwma | value: numerator/Enum.sum(vwma.volumes)}
+    end
+  end
+
   @doc """
   Calculates the simple moving average which is just the sum of the items passed in divided by the number of items 
   """
