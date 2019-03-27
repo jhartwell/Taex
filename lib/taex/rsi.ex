@@ -1,7 +1,6 @@
 defmodule Taex.RSI do
   def calculateRSI([]), do: 0
   def calculateRSI(prices) when is_list(prices) do
-    IO.puts(Enum.count(prices))
     rs = averageGain(prices) / averageLoss(prices)
     100-100/(1 + rs)
   end
