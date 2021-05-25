@@ -1,7 +1,6 @@
 # DISCLAIMER
 
-  Do note that this library is maintained to the best of its ability and all bugs will be addressed as soon as possible. That said, there is risk when using this library as formulas may be incorrect. By using this library
-  you are acknowleding that the maintainers will not be liable for any issues that may arise from using the library while trading (such as any losses due to bugs)
+I am no longer maintaining this project. I will answer any questions to the best of my ability but cannot guarantee a useful or timely answer.
 
 # Taex
 
